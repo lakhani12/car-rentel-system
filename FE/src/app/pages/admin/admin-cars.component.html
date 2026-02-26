@@ -1,0 +1,155 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Admin Dashboard</h1>
+
+    <!-- Database Status Indicator -->
+    <div class="mb-8 p-4 rounded-md" [ngClass]="{
+         'bg-yellow-100 text-yellow-800': dbStatus() === 'connecting',
+         'bg-green-100 text-green-800': dbStatus() === 'connected',
+         'bg-red-100 text-red-800': dbStatus() === 'error'
+       }">
+        <div class="flex items-center">
+            <div class="font-bold mr-2">Database Status:</div>
+            <div *ngIf="dbStatus() === 'connecting'">Checking connection...</div>
+            <div *ngIf="dbStatus() === 'connected'">Connected to <strong>{{ projectId }}</strong></div>
+            <div *ngIf="dbStatus() === 'error'">Connection Failed!</div>
+        </div>
+        <div *ngIf="dbStatus() === 'error'" class="mt-2 font-mono text-sm bg-red-50 p-2 rounded">
+            Error: {{ dbErrorMessage() }}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Form Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md h-fit">
+            <h2 class="text-xl font-semibold mb-4">{{ editingId() ? 'Edit Car' : 'Add New Car' }}</h2>
+            <form (submit)="handleSubmit(); $event.preventDefault()">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Car Name</label>
+                    <input [ngModel]="name()" (ngModelChange)="name.set($event)" name="name" type="text"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="e.g. Tesla Model 3">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+                    <input [ngModel]="category()" (ngModelChange)="category.set($event)" name="category" type="text"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="e.g. Electric">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Price per Day (₹)</label>
+                    <input [ngModel]="price()" (ngModelChange)="price.set($event)" name="price" type="number"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="e.g. 1500">
+                </div>
+
+                <!-- New Fields -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Transmission</label>
+                        <select [ngModel]="transmission()" (ngModelChange)="transmission.set($event)"
+                            name="transmission"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="Automatic">Automatic</option>
+                            <option value="Manual">Manual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Fuel Type</label>
+                        <select [ngModel]="fuelType()" (ngModelChange)="fuelType.set($event)" name="fuelType"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Electric">Electric</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Seats</label>
+                    <input [ngModel]="seats()" (ngModelChange)="seats.set($event)" name="seats" type="number" min="2"
+                        max="10"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="e.g. 4">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                    <textarea [ngModel]="description()" (ngModelChange)="description.set($event)" name="description"
+                        rows="3"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Detailed description of the car..."></textarea>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Main Image URL</label>
+                    <input [ngModel]="image()" (ngModelChange)="image.set($event)" name="image" type="text"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="https://example.com/car.jpg">
+                </div>
+
+                <!-- Additional Images -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 flex justify-between items-center">
+                        <span>Additional Images (Optional)</span>
+                        <button type="button" (click)="addImage()"
+                            class="text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 px-2 py-1 rounded">
+                            + Add Image
+                        </button>
+                    </label>
+                    <div class="space-y-2">
+                        <div *ngFor="let img of images(); let i = index" class="flex items-center space-x-2">
+                            <input [ngModel]="images()[i]" (ngModelChange)="updateImage(i, $event)"
+                                [name]="'image_' + i" type="text"
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                placeholder="https://example.com/additional-car-image.jpg">
+                            <button type="button" (click)="removeImage(i)"
+                                class="bg-red-100 text-red-600 hover:bg-red-200 px-3 py-2 rounded focus:outline-none">
+                                🗑️
+                            </button>
+                        </div>
+                        <p *ngIf="images().length === 0" class="text-sm text-gray-500 italic">No additional images
+                            added.</p>
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="isLoading()"
+                    class="w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex justify-center items-center"
+                    [ngClass]="isLoading() ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'">
+                    {{ isLoading() ? 'Processing...' : (editingId() ? 'Update Car' : 'Add Car') }}
+                </button>
+
+                <button *ngIf="editingId()" type="button" (click)="resetForm()"
+                    class="w-full mt-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                    Cancel
+                </button>
+            </form>
+        </div>
+
+        <!-- List Section -->
+        <div class="lg:col-span-2 space-y-4">
+            <h2 class="text-xl font-semibold mb-4">Existing Cars</h2>
+            <div *ngFor="let car of cars()" class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img [src]="car.image" alt="Car" class="w-20 h-20 object-cover rounded"
+                        onerror="this.src='https://via.placeholder.com/150'">
+                    <div>
+                        <h3 class="font-bold text-lg">{{ car.name }}</h3>
+                        <p class="text-gray-600">{{ car.category }} | <span class="text-blue-600">₹{{ car.price
+                                }}/day</span></p>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button (click)="editCar(car)"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Edit</button>
+                    <button (click)="deleteCar(car.id!)"
+                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+                </div>
+            </div>
+            <div *ngIf="cars().length === 0" class="text-center text-gray-500 py-10">
+                <p *ngIf="dbStatus() === 'connected'">No cars found. Add one on the left!</p>
+                <p *ngIf="dbStatus() === 'error'">Cannot load cars due to error.</p>
+                <p *ngIf="dbStatus() === 'connecting'">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>

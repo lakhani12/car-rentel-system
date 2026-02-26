@@ -1,0 +1,83 @@
+<div class="p-6">
+    <h2 class="text-2xl font-bold mb-6">Booking Management</h2>
+
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Car
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        User
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Dates
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Total
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Status
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let booking of bookings()">
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex items-center">
+                            <div class="ml-3">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{ booking.carId }} <!-- Ideally fetch Car Name -->
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{ booking.userEmail }}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">
+                            {{ booking.startDate | date }} - {{ booking.endDate | date }}
+                        </p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">₹{{ booking.totalPrice }}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <span class="relative inline-block px-3 py-1 font-semibold leading-tight" [ngClass]="{
+                                'text-green-900': booking.status === 'confirmed',
+                                'text-red-900': booking.status === 'cancelled',
+                                'text-yellow-900': booking.status === 'pending'
+                            }">
+                            <span aria-hidden="true" class="absolute inset-0 opacity-50 rounded-full" [ngClass]="{
+                                    'bg-green-200': booking.status === 'confirmed',
+                                    'bg-red-200': booking.status === 'cancelled',
+                                    'bg-yellow-200': booking.status === 'pending'
+                                }"></span>
+                            <span class="relative">{{ booking.status | titlecase }}</span>
+                        </span>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <button *ngIf="booking.status === 'pending'" (click)="updateStatus(booking.id!, 'confirmed')"
+                            class="text-green-600 hover:text-green-900 mr-2">Approve</button>
+                        <button *ngIf="booking.status === 'pending'" (click)="updateStatus(booking.id!, 'cancelled')"
+                            class="text-red-600 hover:text-red-900">Reject</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="bookings().length === 0" class="p-5 text-center text-gray-500">
+            No bookings found.
+        </div>
+    </div>
+</div>
