@@ -11,6 +11,7 @@ import { CarDetailsComponent } from './pages/car-details/car-details.component';
 import { MyBookingsComponent } from './pages/my-bookings/my-bookings.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { adminGuard } from './guards/admin.guard';
+import { AdminLoginComponent } from './pages/admin/admin-login/admin-login';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ export const routes: Routes = [
         ]
     },
     { path: 'login', component: LoginComponent },
+    { path: 'admin-login', component: AdminLoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'cars/:id', component: CarDetailsComponent },
     { path: 'my-bookings', component: MyBookingsComponent },

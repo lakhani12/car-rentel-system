@@ -22,9 +22,18 @@ export class AuthService {
 
     user$: Observable<User | null> = user(this.auth);
     currentUser = signal<User | null>(null);
+    isAdmin = signal<boolean>(false);
 
     constructor() {
-        this.user$.subscribe(u => this.currentUser.set(u));
+        this.user$.subscribe(async u => {
+            this.currentUser.set(u);
+            if (u) {
+                const profile = await this.getUserProfile(u.uid);
+                this.isAdmin.set(profile?.role === 'admin');
+            } else {
+                this.isAdmin.set(false);
+            }
+        });
     }
 
     register(email: string, pass: string) {
