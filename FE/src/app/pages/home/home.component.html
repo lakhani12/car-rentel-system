@@ -124,7 +124,9 @@
                     class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg z-20 animate-[float_6s_ease-in-out_infinite]">
                     <div
                         class="relative w-full h-[300px] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/20 overflow-hidden">
-                        <img *ngFor="let img of heroImages; let i = index" src="https://images.unsplash.com/photo-1620048672265-d18677561dc1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjB8fHN1cGVyJTIwY2FyfGVufDB8fDB8fHww" alt="Premium Sports Car"
+                        <img *ngFor="let img of heroImages; let i = index"
+                            src="https://images.unsplash.com/photo-1620048672265-d18677561dc1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjB8fHN1cGVyJTIwY2FyfGVufDB8fDB8fHww"
+                            alt="Premium Sports Car"
                             class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
                             [ngClass]="i === currentHeroImageIndex() ? 'opacity-100' : 'opacity-0'">
                     </div>
@@ -195,12 +197,6 @@
                             <div class="flex items-center" title="Fuel Type">
                                 <span class="mr-1">⛽</span> {{ car.fuelType || 'Petrol' }}
                             </div>
-                            <div class="flex items-center" title="Fuel Type">
-                                <span class="mr-1">⛽</span> {{ car.fuelType || 'Electric' }}
-                            </div>
-                            <div class="flex items-center" title="Fuel Type">
-                                <span class="mr-1">⛽</span> {{ car.fuelType || 'Diesel' }}
-                            </div>  
                             <div class="flex items-center" title="Seats">
                                 <span class="mr-1">👤</span> {{ car.seats || 4 }} Seats
                             </div>

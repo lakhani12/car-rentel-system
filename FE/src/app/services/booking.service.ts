@@ -11,6 +11,8 @@ export interface Booking {
     endDate: string;
     totalPrice: number;
     status: 'pending' | 'confirmed' | 'cancelled';
+    paymentMethod?: string;
+    paymentStatus?: 'paid' | 'unpaid';
     createdAt: Date;
 }
 
@@ -46,6 +48,23 @@ export class BookingService {
         return new Observable((observer) => {
             const bookingsCollection = collection(this.firestore, 'bookings');
             const q = query(bookingsCollection, orderBy('createdAt', 'desc'));
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                const bookings = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                })) as Booking[];
+                observer.next(bookings);
+            }, (error) => {
+                observer.error(error);
+            });
+            return () => unsubscribe();
+        });
+    }
+
+    getCarBookings(carId: string): Observable<Booking[]> {
+        return new Observable((observer) => {
+            const bookingsCollection = collection(this.firestore, 'bookings');
+            const q = query(bookingsCollection, where('carId', '==', carId));
             const unsubscribe = onSnapshot(q, (snapshot) => {
                 const bookings = snapshot.docs.map(doc => ({
                     id: doc.id,

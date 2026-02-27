@@ -1,63 +1,83 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Already have an account?
-                <a routerLink="/login" class="font-medium text-blue-600 hover:text-blue-500">Sign in</a>
-            </p>
+<div class="flex min-h-screen bg-white">
+    <!-- Left Section - Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-gray-50 lg:order-1 order-2">
+        <div class="w-full max-w-md space-y-8">
+            <div class="text-center lg:text-left">
+                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Create Account</h1>
+                <p class="mt-2 text-sm text-gray-600">
+                    Already have an account?
+                    <a routerLink="/login"
+                        class="font-semibold text-blue-600 hover:text-blue-500 transition-colors">Sign in here</a>
+                </p>
+            </div>
+
+            <form class="mt-8 space-y-5" (submit)="handleRegister(); $event.preventDefault()">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <div class="mt-1">
+                        <input [ngModel]="name()" (ngModelChange)="name.set($event)" id="name" name="name" type="text"
+                            required
+                            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow sm:text-sm"
+                            placeholder="John Doe">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <div class="mt-1">
+                        <input [ngModel]="email()" (ngModelChange)="email.set($event)" id="email" name="email"
+                            type="email" autocomplete="email" required
+                            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow sm:text-sm"
+                            placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <div class="mt-1">
+                        <input [ngModel]="password()" (ngModelChange)="password.set($event)" id="password"
+                            name="password" type="password" autocomplete="new-password" required
+                            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow sm:text-sm"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm
+                        Password</label>
+                    <div class="mt-1">
+                        <input [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)"
+                            id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password"
+                            required
+                            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow sm:text-sm"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div *ngIf="errorMessage()" class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-md">
+                    <p class="text-sm text-red-700">{{ errorMessage() }}</p>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-md text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform transform active:scale-[0.98]">
+                        Sign Up
+                    </button>
+                </div>
+            </form>
         </div>
-        <form class="mt-8 space-y-6" (submit)="handleRegister(); $event.preventDefault()">
-            <div class="rounded-md shadow-sm -space-y-px">
-                <div>
-                    <label for="name" class="sr-only">Full Name</label>
-                    <input [ngModel]="name()" (ngModelChange)="name.set($event)" id="name" name="name" type="text"
-                        required
-                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                        placeholder="Full Name">
-                </div>
-                <div>
-                    <label for="email-address" class="sr-only">Email address</label>
-                    <input [ngModel]="email()" (ngModelChange)="email.set($event)" id="email-address" name="email"
-                        type="email" autocomplete="email" required
-                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                        placeholder="Email address">
-                </div>
-                <div>
-                    <label for="password" class="sr-only">Password</label>
-                    <input [ngModel]="password()" (ngModelChange)="password.set($event)" id="password" name="password"
-                        type="password" autocomplete="new-password" required
-                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                        placeholder="Password">
-                </div>
-                <div>
-                    <label for="confirm-password" class="sr-only">Confirm Password</label>
-                    <input [ngModel]="confirmPassword()" (ngModelChange)="confirmPassword.set($event)"
-                        id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password"
-                        required
-                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                        placeholder="Confirm Password">
-                </div>
-            </div>
+    </div>
 
-            <div *ngIf="errorMessage()" class="text-red-500 text-sm text-center">
-                {{ errorMessage() }}
-            </div>
-
-            <div>
-                <button type="submit"
-                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <!-- Heroicon name: solid/user-add -->
-                        <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path
-                                d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                        </svg>
-                    </span>
-                    Sign up
-                </button>
-            </div>
-        </form>
+    <!-- Right Section - Image/Branding -->
+    <div class="hidden lg:flex lg:w-1/2 relative bg-gray-900 lg:order-2 order-1">
+        <img class="absolute inset-0 w-full h-full object-cover opacity-80"
+            src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80"
+            alt="Luxury Car Interior" />
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
+        <div class="absolute bottom-0 right-0 p-12 text-white text-right">
+            <h2 class="text-4xl font-bold mb-4">Start Your Journey.</h2>
+            <p class="text-lg text-gray-300 text-right ms-auto max-w-md">Join our exclusive club today and get access to
+                the world's most sought-after vehicles.</p>
+        </div>
     </div>
 </div>
