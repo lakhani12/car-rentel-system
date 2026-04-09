@@ -1,22 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <h1 class="text-3xl font-bold text-gray-900 mb-4">Admin Dashboard</h1>
 
-    <!-- Database Status Indicator -->
-    <div class="mb-8 p-4 rounded-md" [ngClass]="{
-         'bg-yellow-100 text-yellow-800': dbStatus() === 'connecting',
-         'bg-green-100 text-green-800': dbStatus() === 'connected',
-         'bg-red-100 text-red-800': dbStatus() === 'error'
-       }">
-        <div class="flex items-center">
-            <div class="font-bold mr-2">Database Status:</div>
-            <div *ngIf="dbStatus() === 'connecting'">Checking connection...</div>
-            <div *ngIf="dbStatus() === 'connected'">Connected to <strong>{{ projectId }}</strong></div>
-            <div *ngIf="dbStatus() === 'error'">Connection Failed!</div>
-        </div>
-        <div *ngIf="dbStatus() === 'error'" class="mt-2 font-mono text-sm bg-red-50 p-2 rounded">
-            Error: {{ dbErrorMessage() }}
-        </div>
-    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Form Section -->
